@@ -1,0 +1,59 @@
+Hàm ảo trong lớp của C++:
+
+ví dụ ta có hai lớp:
+|  Cơ sở  | Dẫn xuất |
+|    A    |     B    |
+
+Các phương thức ở hai lớp, lớp B kế thừa công khai lớp A:
+
+| Lớp | Method (public) |
+|  A  |    sayhi()      |
+|  B  |    sayhi()      |
+
+Khởi tạo một con trỏ: A* ptr = nullptr;
+Tạo một đối tượng lớp B: B b;
+Gán giá trị địa chỉ bộ nhớ của một đối tượng lớp B: ptr = &b;
+///////////////////////////////////////////////////////////////////////////////
+Chạy method sayhi() từ biến con trỏ: ptr->sayhi();
+    >>>A say hi;
+
+    Vì method sayhi() ở cả lớp dẫn xuất và lớp cở sở trùng tên nên chương trình
+    bối rối khi lựa chọn phương thức, nên kết quả luôn là method của lớp cơ sở
+///////////////////////////////////////////////////////////////////////////////
+Để khắc phục tình trạng này, chúng ta dùng hàm ảo (virtual function):
+Method sayhi() của A phải được định nghĩa như sau: virtual void sayhi(){...};
+Khi đó:
+    - Chạy method sayhi() từ biến con trỏ: ptr->sayhi();
+        >>>B say hi;
+//////////////////////////////////////////////////////////////////////////////
+
+
+    DƯỚI ĐÂY LÀ MÃ CODE, HÃY THÊM TỪ KHÓA VIRTUAL VÀO TRƯỚC METHOD sayhi
+              ĐỂ THẤY SỰ KHÁC BIỆT TRƯỚC VÀ SAU KHI TẠO HÀM ẢO
+            
+
+                    #include <iostream>
+
+                    using namespace std;
+
+                    class A {
+                        public:
+                            void sayhi(){
+                                cout << "A say hi" << endl;
+                            };
+                    };
+
+                    class B : public A {
+                        public:
+                            void sayhi(){
+                                cout << "B say hi" << endl;
+                            };
+                    };
+
+                    int main(){
+                        A* ptr = nullptr;
+                        B b;
+
+                        ptr = &b;
+                        ptr->sayhi();
+                    };
